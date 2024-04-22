@@ -1,6 +1,5 @@
 package model.charactersModel;
 
-import controller.Database;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
@@ -16,24 +15,26 @@ import static controller.Utils.addVectors;
 import static controller.Utils.multiplyVector;
 
 public class EpsilonModel implements Movable, Collidable{
-    Point2D anchor;
+    public static Point2D anchorEpsilon;
     double radius;
     String id;
     public static Direction direction;
-    static int numHp = 100;
-    static ArrayList<Point2D> epsilonVertices = new ArrayList<>();
+    public static int numHp = 100;
+    ArrayList<Point2D> epsilonVertices = new ArrayList<>();
     public static double speedEpsilon = 3*60D/UPS;
     public static double velocityEpsilon;
-    static int degree;
-    static int numVertices;
+    public static int degree;
+    public static int numVertices;
     boolean isAlive;
     int degreeDirection;
+
+    public static int numXP = 100;
 
 
     public static ArrayList<EpsilonModel> epsilonModels =new ArrayList<>();
 
     public EpsilonModel(Point2D anchor, double radius, int degree,int numVertices) {
-        this.anchor = anchor;
+        this.anchorEpsilon = anchor;
         this.isAlive = true;
         this.radius = radius;
         EpsilonModel.numVertices = numVertices;
@@ -45,8 +46,8 @@ public class EpsilonModel implements Movable, Collidable{
         EpsilonModel.degree = degree;
         epsilonModels.add(this);
         Collidable.collidables.add(this);
+        this.epsilonVertices.clear();
 
-        EpsilonModel.velocityEpsilon = 0;
 
         for (int i=0; i<EpsilonModel.numVertices; i++) {
             epsilonVertices.add(new Point2D.Double((int) (anchor.getX()+radius*Math.cos(Math.toRadians((degree+((double) 360/numVertices)*i)))),
@@ -76,12 +77,12 @@ public class EpsilonModel implements Movable, Collidable{
 
     @Override
     public Point2D getAnchor() {
-        return anchor;
+        return anchorEpsilon;
     }
 
     @Override
     public ArrayList<Point2D> getVertices() {
-        return EpsilonModel.epsilonVertices;
+        return this.epsilonVertices;
     }
 
     @Override
@@ -89,9 +90,9 @@ public class EpsilonModel implements Movable, Collidable{
         if (speed>10000)
             speed = SPEED;
         Point2D movement=multiplyVector(direction.getDirectionVector(),speed);
-        this.anchor=addVectors(anchor,movement);
+        anchorEpsilon =addVectors(anchorEpsilon,movement);
         for (int i=0; i<EpsilonModel.numVertices; i++)
-            EpsilonModel.epsilonVertices.set(i,addVectors(EpsilonModel.epsilonVertices.get(i),movement));
+            this.epsilonVertices.set(i,addVectors(this.epsilonVertices.get(i),movement));
         speedEpsilon += velocityEpsilon;
         if (speedEpsilon<0.5)
             velocityEpsilon = 0;
@@ -130,6 +131,21 @@ public class EpsilonModel implements Movable, Collidable{
     }
 
     @Override
+    public boolean isCollectibleSq() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollectibleTr() {
+        return false;
+    }
+
+    @Override
+    public boolean isLaserBall() {
+        return false;
+    }
+
+    @Override
     public double getRadius() {
         return radius;
     }
@@ -151,59 +167,15 @@ public class EpsilonModel implements Movable, Collidable{
 
     public void goLeftEp(){
         Point2D directionVector = direction.getDirectionVector();
-//        if ((degreeDirection>=0 && degreeDirection<=90)) {
-//            degreeDirection = 180-degreeDirection;
-//        }
-//        else if (degreeDirection>=270 && degreeDirection<=360) {
-//            degreeDirection = 900-2*degreeDirection;
-//        }
-//        else {
-//            degreeDirection = 180;
-//        }
         direction = new Direction(180);
     }
     public void goRightEp(){
-//        if ((degreeDirection>=90 && degreeDirection<=180)) {
-//            degreeDirection = 180-degreeDirection;
-//        }
-//        else if (degreeDirection>=180 && degreeDirection<=270) {
-//            degreeDirection = 540-degreeDirection;
-//        }
-//        else {
-//            degreeDirection = 0;
-//        }
         direction = new Direction(0);
     }
     public void goUpEp(){
-//        if ((degreeDirection>=270 && degreeDirection<=360)) {
-//            degreeDirection = 360-degreeDirection;
-//        }
-//        else if (degreeDirection>=180 && degreeDirection<=270) {
-//            degreeDirection = 360-degreeDirection;
-//        }
-//        else {
-//            degreeDirection = 90;
-//        }
         direction = new Direction(270);
     }
     public void goDownEp(){
-//        if ((degreeDirection>=0 && degreeDirection<=45)) {
-//            degreeDirection = 360-45;
-//        }
-//        else if (degreeDirection>=45 && degreeDirection<=90){
-//            degreeDirection = 360-degreeDirection
-//        }
-//        else if (degreeDirection>=90 && degreeDirection<=135) {
-//            degreeDirection = 360-degreeDirection;
-//        }
-//        else if (degreeDirection>=135 && degreeDirection<=180)
-//            degreeDirection = 50+degreeDirection;
-//        else if (degreeDirection>=180 && degreeDirection<=180+45){
-//            degreeDirection = 45 + degreeDirection;
-//        }
-//        else if (degreeDirection>=180+45 && degreeDirection<=270)
-//            degreeDirection = 270;
-//        else if ()
         direction = new Direction(90);
     }
 

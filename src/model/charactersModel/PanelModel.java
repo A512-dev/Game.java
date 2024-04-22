@@ -1,45 +1,62 @@
 package model.charactersModel;
 
 import controller.Constants;
+import controller.Database;
 import model.collision.Collidable;
 import model.movement.Direction;
+import view.GlassFrame;
 import view.MotionPanel;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+import static controller.Database.*;
+
 public class PanelModel implements Collidable{
-    int degree;
-    int directionX, directionY;
-    Line2D line1, line2, line3, line4;
-    ArrayList<Line2D> lines = new ArrayList<>();
-    double radius;
-    String id;
-    Direction direction;
-    public static Point2D center = Constants.center;
-    public static int widthLeft = MotionPanel.getINSTANCE().getWidth() / 2;
-    public static int widthRight = MotionPanel.getINSTANCE().getWidth() / 2;
-    public static int heightDown = MotionPanel.getINSTANCE().getHeight() / 2;
-    public static int heightUp = MotionPanel.getINSTANCE().getHeight() / 2;
+
+
+
     public static Point2D point1Panel;
     public static Point2D point2Panel;
     public static Point2D point3Panel;
-    public static Point2D point4Panel;
+    public Point2D point4Panel;
+
+
+    public static Point2D center = Constants.center;
+    private static PanelModel INSTANCE;
 
     public PanelModel(){
+        if (Database.firstTime==0) {
+            widthLeft = GlassFrame.getINSTANCE().getWidth() / 4;
+            widthRight = GlassFrame.getINSTANCE().getWidth() / 4;
+            heightDown = GlassFrame.getINSTANCE().getHeight() / 4;
+            heightUp = GlassFrame.getINSTANCE().getHeight() / 4;
+        }
+        Database.firstTime++;
         point1Panel = new Point2D.Double(center.getX() - widthLeft, center.getY() - heightUp);
         point2Panel = new Point2D.Double(center.getX() + widthRight, center.getY() - heightUp);
         point3Panel = new Point2D.Double(center.getX() + widthRight, center.getY() + heightDown);
         point4Panel = new Point2D.Double(center.getX() - widthLeft, center.getY() + heightUp);
         System.out.println("xPanell:"+point1Panel.getX()+" "+ point2Panel.getX()+" "+ point3Panel.getX()+" "+ point4Panel.getX());
         System.out.println("yPanell:"+point1Panel.getY()+" "+ point2Panel.getY()+" "+ point3Panel.getY()+" "+ point4Panel.getY());
-        Collidable.collidables.add(this);
+        System.out.println();
+        System.out.println(center);
+        if (Collidable.collidables.size()==0)
+            Collidable.collidables.add(this);
+    }
+
+    public static PanelModel getINSTANCE(){
+        if (INSTANCE==null) INSTANCE = new PanelModel();
+        return INSTANCE;
+    }
+    public static void setINSTANCE(PanelModel panelModel) {
+        INSTANCE = panelModel;
     }
 
     @Override
     public String getId() {
-        return null;
+        return "panel";
     }
 
     @Override
@@ -61,9 +78,22 @@ public class PanelModel implements Collidable{
     public boolean isRectangular() {
         return false;
     }
-
+    @Override
+    public boolean isLaserBall() {
+        return false;
+    }
     @Override
     public boolean isTriangular() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollectibleSq() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollectibleTr() {
         return false;
     }
 
@@ -86,148 +116,54 @@ public class PanelModel implements Collidable{
         vertices.add(point1Panel);
         return vertices;
     }
-//    public static PanelModel getINSTANCE() {
-//        if (INSTANCE==null) INSTANCE=new PanelModel();
-//        return INSTANCE;
-//   }
+
+
+//    public static int getWidthLeft() {
+//        return PanelModel.getINSTANCE().widthLeft;
+//    }
+//    public static void setWidthLeft(int widthLeft) {
+//        PanelModel.getINSTANCE().widthLeft = widthLeft;
+//    }
+//    public static int getWidthRight() {
+//        return PanelModel.getINSTANCE().widthRight;
+//    }
+//    public static void setWidthRight(int widthRight) {
+//        PanelModel.getINSTANCE().widthRight = widthRight;
+//    }
+//    public static int getHeightDown() {
+//        return PanelModel.getINSTANCE().heightDown;
+//    }
+//    public static void setHeightDown(int heightDown) {
+//        PanelModel.getINSTANCE().heightDown = heightDown;
+//    }
+//    public static int getHeightUp() {
+//        return PanelModel.getINSTANCE().heightUp;
+//    }
+//    public static void setHeightUp(int heightUp) {
+//        PanelModel.getINSTANCE().heightUp = heightUp;
+//    }
+    public static Point2D getPoint1Panel() {
+        return new Point2D.Double(center.getX() - widthLeft, center.getY() - heightUp);
+    }
+    public static void setPoint1Panel(Point2D point1Panel) {
+        PanelModel.getINSTANCE().point1Panel = point1Panel;
+    }
+    public static Point2D getPoint2Panel() {
+        return new Point2D.Double(center.getX() + widthRight, center.getY() - heightUp);
+    }
+    public static void setPoint2Panel(Point2D point2Panel) {
+        PanelModel.getINSTANCE().point2Panel = point2Panel;
+    }
+    public static Point2D getPoint3Panel() {
+        return new Point2D.Double(center.getX() + widthRight, center.getY() + heightDown);
+    }
+    public static void setPoint3Panel(Point2D point3Panel) {
+        PanelModel.getINSTANCE().point3Panel = point3Panel;
+    }
+    public static Point2D getPoint4Panel() {
+        return new Point2D.Double(center.getX() - widthLeft, center.getY() + heightUp);
+    }
+    public static void setPoint4Panel(Point2D point4Panel) {
+        PanelModel.getINSTANCE().point4Panel = point4Panel;
+    }
 }
-
-
-//    public PanelModel(Point2D center, int widthLeft, int widthRight, int heightDown, int heightUp) {
-//        this.center = center;
-//        this.widthLeft = widthLeft;
-//        this.widthRight = widthRight;
-//        this.heightDown = heightDown;
-//        this.heightUp = heightUp;
-//        this.degree = 45;
-//        this.id= UUID.randomUUID().toString();
-//        this.direction=new Direction(new Random().nextInt());
-//        Collidable.collidables.add(this);
-//        createPanelView();
-//        this.point1.setLocation(center.getX()-widthLeft,center.getY()-heightUp);
-//        this.point2.setLocation(center.getX()+ widthRight,center.getY()-heightUp);
-//        this.point3.setLocation(center.getX()+widthRight,center.getY()+heightDown);
-//        this.point4.setLocation(center.getX()-widthLeft,center.getY()-heightUp);
-//        System.out.println("pointsX:"+point1.getX()+" "+point2.getX()+" "+point3.getX()+" "+point4.getX());
-//        System.out.println("pointsY:"+point1.getY()+" "+point2.getY()+" "+point3.getY()+" "+point4.getY());
-//        Collidable.collidables.add(this);
-//        Database.panelModelData = this;
-//    }
-//
-//    @Override
-//    public void setDirection(Direction direction){
-//            this.direction = direction;
-//    }
-//    @Override
-//    public Point2D getAnchor() {
-//        return center;
-//    }
-//    @Override
-//    public ArrayList<Point2D> getVertices() {
-//        ArrayList<Point2D> vertices = new ArrayList<>();
-//        vertices.add(point4);
-//        vertices.add(point3);
-//        vertices.add(point2);
-//        vertices.add(point1);
-//        //System.out.println(point1.getX()+" "+point1.getY());
-//        return vertices;
-//    }
-//
-//        @Override
-//        public CollisionState collides(Collidable collidable) {
-//            return Collidable.super.collides(collidable);
-//        }
-//    public int getWidthRight() {
-//        return widthRight;
-//    }
-//
-//    public void setWidthRight(int widthRight) {
-//        this.widthRight = widthRight;
-//        Database.panelModelData.setWidthRight(widthRight);
-//    }
-//
-//    public int getWidthLeft() {
-//        return widthLeft;
-//    }
-//
-//    public void setWidthLeft(int widthLeft) {
-//        this.widthLeft = widthLeft;
-//        Database.panelModelData.setWidthLeft(widthLeft);
-//    }
-//
-//    public int getHeightDown() {
-//        return heightDown;
-//    }
-//
-//    public void setHeightDown(int heightDown) {
-//        this.heightDown = heightDown;
-//        Database.panelModelData.setHeightDown(heightDown);
-//    }
-//
-//    public int getHeightUp() {
-//        return heightUp;
-//    }
-//
-//    public void setHeightUp(int heightUp) {
-//        this.heightUp = heightUp;
-//        Database.panelModelData.setHeightUp(heightUp);
-//    }
-//
-//
-//
-//    public Point2D getCenter() {
-//        return center;
-//    }
-//
-//    public Point2D getPoint1() {
-//        return point1;
-//    }
-//
-//    public Point2D getPoint2() {
-//        return point2;
-//    }
-//
-//    public Point2D getPoint3() {
-//        return point3;
-//    }
-//
-//    public Point2D getPoint4() {
-//        return point4;
-//    }
-//
-////        @Override
-////        public void move(Direction direction, double speed) {
-////            Point2D movement=multiplyVector(direction.getDirectionVector(),speed);
-////            Point corner=new Point(GlassFrame.getINSTANCE().getX(),GlassFrame.getINSTANCE().getY());
-////            this.center=addVectors(center,movement);
-////            this.point1=addVectors(point1, movement);
-////            this.point2=addVectors(point2, movement);
-////            this.point3=addVectors(point3, movement);
-////            this.point4=addVectors(point4, movement);
-////        }
-//
-//        @Override
-//        public boolean isCircular() {
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean isPanel() {
-//            return true;
-//        }
-//
-//        @Override
-//        public boolean isRectangular() {
-//            return false;
-//        }
-//
-//        @Override
-//        public boolean isTriangular() {
-//            return false;
-//        }
-//
-//        @Override
-//        public double getRadius() {
-//            return 0;
-//        }
-//    }

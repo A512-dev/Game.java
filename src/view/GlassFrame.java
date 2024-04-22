@@ -16,11 +16,11 @@ public final class GlassFrame extends JFrame implements KeyListener {
         setUndecorated(true);
         setName("glass frame");
         setTitle("frame1");
-        //setBackground(new Color(0,0,0,0));
+        setBackground(new Color(50,50,50,50));
         setSize(GLASS_FRAME_DIMENSION);
         setLocationRelativeTo(null);
         setVisible(true);
-        setFocusable(true);
+        //setFocusable(true);
         setLayout(null);
         System.out.println("GlassFrameWidth:"+getWidth());
     }
@@ -28,6 +28,9 @@ public final class GlassFrame extends JFrame implements KeyListener {
     public static GlassFrame getINSTANCE() {
         if (INSTANCE==null) INSTANCE=new GlassFrame();
         return INSTANCE;
+    }
+    public static void setINSTANCE(GlassFrame glassFrame) {
+        INSTANCE = glassFrame;
     }
 
     @Override

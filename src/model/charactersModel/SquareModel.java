@@ -31,6 +31,14 @@ public class SquareModel implements Movable, Collidable {
     public static double length;
     String id;
 
+    public int numHpSquare;
+
+    public boolean dash;
+
+    public double getSpeedSquare() {
+        return speedSquare;
+    }
+
     double speedSquare;
     double velocitySquare;
 
@@ -42,6 +50,9 @@ public class SquareModel implements Movable, Collidable {
     public static ArrayList<SquareModel> squareModels = new ArrayList<>();
 
     public SquareModel(Point2D anchor, double radius,int degree) {
+        this.dash = false;
+
+        this.numHpSquare = 10;
 
         this.anchor = anchor;
         this.radius = radius;
@@ -123,6 +134,8 @@ public class SquareModel implements Movable, Collidable {
 
     @Override
     public void move() {
+//        if (dash)
+//            dashSquare(EpsilonModel.anchorEpsilon);
         move(direction,speedSquare,velocitySquare);
     }
 
@@ -145,9 +158,22 @@ public class SquareModel implements Movable, Collidable {
     public boolean isRectangular() {
         return true;
     }
-
+    @Override
+    public boolean isLaserBall() {
+        return false;
+    }
     @Override
     public boolean isTriangular() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollectibleSq() {
+        return false;
+    }
+
+    @Override
+    public boolean isCollectibleTr() {
         return false;
     }
 
@@ -158,5 +184,15 @@ public class SquareModel implements Movable, Collidable {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public void dashSquare(Point2D anchorEpsilon) {
+        direction = new Direction(relativeLocation(anchorEpsilon,anchor));
+        speedSquare = SPEED;
+        velocitySquare = 0;
+    }
+
+    public void setAnchor(Point2D v) {
+        this.anchor = v;
     }
 }

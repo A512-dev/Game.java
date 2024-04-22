@@ -14,7 +14,6 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             GlassFrame.getINSTANCE();
             new HomePanel();
-            EpsilonModel.setNumHp(100);
             //MotionPanel.getINSTANCE();
             new Update();
             SoundManager soundManager = new SoundManager();
