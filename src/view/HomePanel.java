@@ -1,15 +1,13 @@
 package view;
 
-import controller.Update;
-import model.charactersModel.BallModel;
+import controller.Database;
+import model.charactersModel.EpsilonModel;
 import model.charactersModel.SquareModel;
 import model.charactersModel.TriangleModel;
-import view.charactersView.TriangleView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.geom.Point2D;
 
 import static controller.Constants.*;
@@ -23,9 +21,14 @@ public class HomePanel extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.yellow,5));
         setSize(PANEL_SIZE);
         setBackground(Color.red);
+        setFocusable(true);
+        requestFocus(true);
+
         setLocationToCenter(GlassFrame.getINSTANCE());
         setLayout(null);
         GlassFrame.getINSTANCE().getContentPane().add(this);
+        setFocusable(true);
+        requestFocus(true);
 //        cornerX = GlassFrame.getINSTANCE().getWidth()/2-this.getWidth()/2;
 //        cornerY = GlassFrame.getINSTANCE().getHeight()/2-this.getHeight()/2;
         this.buttonStart = new JButton("START");
@@ -63,10 +66,19 @@ public class HomePanel extends JPanel {
         buttonStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Database.gameOver = false;
                 GlassFrame.getINSTANCE().getContentPane().removeAll();
                 MotionPanel.getINSTANCE();
 //                revalidate();
 //                repaint();
+
+                //creating Epsilon
+                double randomX1=rng.nextDouble(MotionPanel.getINSTANCE().getX(),MotionPanel.getINSTANCE().getX()+MotionPanel.getINSTANCE().getWidth());
+                double randomY1=rng.nextDouble(MotionPanel.getINSTANCE().getY(),MotionPanel.getINSTANCE().getY()+MotionPanel.getINSTANCE().getHeight());
+                //double randomRadius1=rng.nextDouble(MIN_RADIUS_EPSILON, MAX_RADIUS_EPSILON);
+                int degree1 = rng.nextInt(0,180);
+                new EpsilonModel(new Point2D.Double(randomX1,randomY1),EPSILON_RADIUS,degree1,10);
+                EpsilonModel.setNumHp(100);
 
                 for(int i = 0; i< NUMBER_OF_TRIANGLES; i++){
                     double randomX=rng.nextDouble(MotionPanel.getINSTANCE().getX(),MotionPanel.getINSTANCE().getX()+MotionPanel.getINSTANCE().getWidth());
@@ -84,13 +96,9 @@ public class HomePanel extends JPanel {
                     System.out.println("squareAnchor:"+randomX+" "+randomY+"radius:"+randomRadius);
                     new SquareModel(new Point2D.Double(randomX,randomY),randomRadius,degree);
                 }
-                for(int i = 0; i< NUMBER_OF_BALLS; i++){
-                    double randomX=rng.nextDouble(MotionPanel.getINSTANCE().getX(),MotionPanel.getINSTANCE().getX()+MotionPanel.getINSTANCE().getWidth());
-                    double randomY=rng.nextDouble(MotionPanel.getINSTANCE().getY(),MotionPanel.getINSTANCE().getY()+MotionPanel.getINSTANCE().getHeight());
-                    double randomRadius=rng.nextDouble(MIN_RADIUS, MAX_RADIUS);
-                    new BallModel(new Point2D.Double(randomX,randomY),randomRadius);
-                }
-                new Update();
+
+                //new Update();
+                revalidate();
                 repaint();
                 System.out.println(1);
             }
@@ -105,6 +113,7 @@ public class HomePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeAll();
+                GlassFrame.getINSTANCE().getContentPane().removeAll();
                 new SettingsPanel();
                 revalidate();
                 repaint();
@@ -126,6 +135,53 @@ public class HomePanel extends JPanel {
                 new TutorialPanel();
                 revalidate();
                 repaint();
+            }
+        });
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                System.out.println("keyTyped");
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("KeyPressed");
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                System.out.println("Key released");
+
+            }
+        });
+
+
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("mouseClicked");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("mousePressed");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                System.out.println("mouseClicked");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                System.out.println("mouseExited");
             }
         });
     }

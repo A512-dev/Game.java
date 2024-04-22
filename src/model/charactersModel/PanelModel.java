@@ -36,8 +36,19 @@ public class PanelModel implements Collidable{
         System.out.println("yPanell:"+point1Panel.getY()+" "+ point2Panel.getY()+" "+ point3Panel.getY()+" "+ point4Panel.getY());
         Collidable.collidables.add(this);
     }
+
+    @Override
+    public String getId() {
+        return null;
+    }
+
     @Override
     public boolean isCircular() {
+        return false;
+    }
+
+    @Override
+    public boolean isEpsilon() {
         return false;
     }
 

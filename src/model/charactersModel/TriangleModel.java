@@ -21,13 +21,20 @@ public class TriangleModel implements Movable, Collidable {
     double radius;
     double degree;
     String id;
-    Direction direction;
+    public Direction direction;
+
+    double velocityTriangle;
+    double speedTriangle;
+
     public static ArrayList<TriangleModel> triangleModels = new ArrayList<>();
 
     public TriangleModel(Point2D anchor,double degree, double radius) {
         this.anchor = anchor;
         this.radius = radius;
         this.degree = degree;
+
+        this.speedTriangle = SPEED;
+        this.velocityTriangle = 0;
 
         this.point1 = new Point2D.Double(anchor.getX()+radius*Math.cos(Math.toRadians(degree)),anchor.getY()-radius*Math.sin(Math.toRadians(degree)));
         this.point2 = new Point2D.Double(anchor.getX()+radius*Math.cos(Math.toRadians(degree+120)),anchor.getY()-radius*Math.sin(Math.toRadians(degree+120)));
@@ -39,15 +46,27 @@ public class TriangleModel implements Movable, Collidable {
         Collidable.collidables.add(this);
         createTriangleView(id);
     }
-    public Polygon getTrianglePoly(){
-        int[] xPoly = {(int) point1.getX(),(int) point2.getX(),(int) point3.getX()};
-        int[] yPoly = {(int) point1.getY(),(int) point2.getY(),(int) point3.getY()};
-        Polygon trianglePoly = new Polygon(xPoly,yPoly,3);
-        return trianglePoly;
-    }
+//    public Polygon getTrianglePoly(){
+//        int[] xPoly = {(int) point1.getX(),(int) point2.getX(),(int) point3.getX()};
+//        int[] yPoly = {(int) point1.getY(),(int) point2.getY(),(int) point3.getY()};
+//        Polygon trianglePoly = new Polygon(xPoly,yPoly,3);
+//        return trianglePoly;
+//    }
+    @Override
     public String getId() {
         return id;
     }
+
+    @Override
+    public void setSpeed(double speed) {
+        this.speedTriangle = speed;
+    }
+
+    @Override
+    public void setVelocity(double velocity) {
+        this.velocityTriangle = velocity;
+    }
+
     @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
@@ -73,21 +92,29 @@ public class TriangleModel implements Movable, Collidable {
     }
 
     @Override
-    public void move(Direction direction, double speed) {
+    public void move(Direction direction, double speed, double velocity) {
         Point2D movement=multiplyVector(direction.getDirectionVector(),speed);
         this.anchor = addVectors(anchor,movement);
         this.point1 = addVectors(point1,movement);
         this.point2 = addVectors(point2,movement);
         this.point3 = addVectors(point3,movement);
+        speedTriangle += velocityTriangle;
+        if (speedTriangle < 0.5)
+            velocityTriangle = 0;
     }
 
     @Override
     public void move() {
-        move(direction,SPEED);
+        move(direction,speedTriangle,velocityTriangle);
     }
 
     @Override
     public boolean isCircular() {
+        return false;
+    }
+
+    @Override
+    public boolean isEpsilon() {
         return false;
     }
 

@@ -1,16 +1,23 @@
 package view.charactersView;
 
+import model.charactersModel.EpsilonModel;
+
+import javax.swing.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class BallView {
+public class EpsilonView {
     String id;
     Point2D currentLocation=new Point2D.Double(0,0);
     double currentRadius;
-    public static ArrayList<BallView> ballViews=new ArrayList<>();
-    public BallView(String id) {
+
+    Point2D[] currentVertices = new Point2D[EpsilonModel.getNumVertices()];
+    public static ArrayList<EpsilonView> epsilonViews =new ArrayList<>();
+    public EpsilonView(String id) {
+        for (int i=0; i<currentVertices.length; i++)
+            currentVertices[i] = new Point2D.Double(0,0);
         this.id = id;
-        ballViews.add(this);
+        epsilonViews.add(this);
     }
 
     public Point2D getCurrentLocation() {
@@ -32,4 +39,12 @@ public class BallView {
     public String getId() {
         return id;
     }
+
+    public Point2D[] getCurrentVertices() {
+        return currentVertices;
+    }
+    public void setCurrentVertices(Point2D[] currentVertices) {
+        this.currentVertices = currentVertices;
+    }
+
 }

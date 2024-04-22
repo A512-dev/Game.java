@@ -15,4 +15,5 @@ public class Utils {
     public static Point2D weightedAddVectors(Point2D point1,Point2D point2,double weight1,double weight2){
         return multiplyVector(addVectors(multiplyVector(point1,weight1),multiplyVector(point2,weight2)),1/(weight1+weight2));
     }
+
 }

@@ -1,10 +1,10 @@
 package controller;
 
-import model.charactersModel.BallModel;
+import model.charactersModel.EpsilonModel;
 import model.charactersModel.SquareModel;
 import model.charactersModel.TriangleModel;
 import view.MotionPanel;
-import view.charactersView.BallView;
+import view.charactersView.EpsilonView;
 import view.charactersView.PanelView;
 import view.charactersView.SquareView;
 import view.charactersView.TriangleView;
@@ -16,8 +16,8 @@ import java.util.Objects;
 import static controller.Utils.relativeLocation;
 
 public abstract class Controller {
-    public static void createBallView(String id){
-        new BallView(id);
+    public static void createEpsilonView(String id){
+        new EpsilonView(id);
     }
     public static void createSquareView(String id){
         new SquareView(id);
@@ -32,8 +32,8 @@ public abstract class Controller {
 
 
 
-    public static Point2D calculateViewLocationBall(Component component, String id){
-        BallModel ballModel=findModelBall(id);
+    public static Point2D calculateViewLocationEpsilon(Component component, String id){
+        EpsilonModel ballModel= findModelEpsilon(id);
         Point corner=new Point(component.getX(),component.getY());
         assert ballModel != null;
         return relativeLocation(ballModel.getAnchor(),corner);
@@ -50,6 +50,7 @@ public abstract class Controller {
         assert triangleModel != null;
         return relativeLocation(triangleModel.getAnchor(),corner);
     }
+
     public static Point2D[] calculateViewLocationSquarePoints(Component component, String id){
         SquareModel squareModel=findModelSquare(id);
 //        Point corner=new Point(component.getX(),component.getY());
@@ -73,11 +74,24 @@ public abstract class Controller {
         currentViewLocationTrPoints[2] = relativeLocation(triangleModel.getVertices().get(2), corner);
         return currentViewLocationTrPoints;
     }
+    public static Point2D[] calculateViewLocationEpsilonPoints(Component component, String id){
+        EpsilonModel epsilonModel=findModelEpsilon(id);
+//        Point corner=new Point(component.getX(),component.getY());
+        assert epsilonModel != null;
+        Point2D[] currentViewLocationEpPoints = new Point2D[EpsilonModel.getNumVertices()];
+        Point corner=new Point(MotionPanel.getINSTANCE().getX(),MotionPanel.getINSTANCE().getY());
+        for (int i=0; i<EpsilonModel.getNumVertices(); i++)
+        {
+            currentViewLocationEpPoints[i] = relativeLocation(epsilonModel.getVertices().get(i), corner);
+        }
+        return currentViewLocationEpPoints;
+    }
 
 
 
-    public static double getViewRadiusBall(String id){
-        return Objects.requireNonNull(findModelBall(id)).getRadius();
+
+    public static double getViewRadiusEpsilon(String id){
+        return Objects.requireNonNull(findModelEpsilon(id)).getRadius();
     }
     public static double getViewRadiusSquare(String id){
         return Objects.requireNonNull(findModelSquare(id)).getRadius();
@@ -92,9 +106,9 @@ public abstract class Controller {
         }
         return null;
     }
-    public static BallModel findModelBall(String id){
-        for (BallModel ballModel: BallModel.ballModels){
-            if (ballModel.getId().equals(id)) return ballModel;
+    public static EpsilonModel findModelEpsilon(String id){
+        for (EpsilonModel epsilonModel : EpsilonModel.epsilonModels){
+            if (epsilonModel.getId().equals(id)) return epsilonModel;
         }
         return null;
     }
@@ -104,4 +118,9 @@ public abstract class Controller {
         }
         return null;
     }
+
+//    public static void impact(Point2D pointImpact) {
+//
+//    }
+
 }
